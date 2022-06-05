@@ -23,18 +23,19 @@ public class SessionManager {
         String sessionId = UUID.randomUUID().toString();
         sessionStore.put(sessionId, value);
 
+        // 쿠키생성 후 세션아이디 입
         Cookie mySessionCookie = new Cookie(SESSION_COOKIE_NAME, sessionId);
         // 응답에 쿠키 추가
         response.addCookie(mySessionCookie);
     }
 
-    // 세션 조회
+    // 세션 조회. 리퀘스트를 받아서 조회
     public Object getSession(HttpServletRequest request) {
         Cookie sessionCookie = findCookie(request, SESSION_COOKIE_NAME);
         if (sessionCookie == null) {
             return null;
         }
-        return sessionStore.get(sessionCookie.getValue());
+        return sessionStore.get(sessionCookie.getValue()); // 세션-멤버 객체를 세션저장소에 넣어두었으니, get할때 멤버객체가 나올것
     }
 
     // 세션 만료

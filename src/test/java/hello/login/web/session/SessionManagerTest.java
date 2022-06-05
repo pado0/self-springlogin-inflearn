@@ -10,6 +10,7 @@ class SessionManagerTest {
 
     SessionManager sessionManager = new SessionManager();
 
+    // 컨트롤러에 아직 세션을 적용하지 않았으니 간략하게 테스트
     @Test
     void sessionTest(){
 
