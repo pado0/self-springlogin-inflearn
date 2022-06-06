@@ -2,6 +2,7 @@ package hello.login.web;
 
 import hello.login.domain.member.Member;
 import hello.login.domain.member.MemberRepository;
+import hello.login.web.argumentresolver.Login;
 import hello.login.web.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -87,7 +88,7 @@ public class HomeController {
     }
 
     // v4
-    @GetMapping("/")
+    //@GetMapping("/")
     public String homeLoginV3Spring(
             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                     Member loginMember, Model model
@@ -98,6 +99,20 @@ public class HomeController {
         }
 
         // 세션이 유지되면 로그인으로 이동
+        model.addAttribute("member", loginMember);
+        return "loginHome";
+    }
+
+    //v5 . ArgumentResolver로 로그인한 회원 찾기 -> 여기에 @Login 어노테이션 사용했다. 로그인 어노테이션이 있을 경우 우리가 만든 리졸버가 동작하도록
+    // 인터셉터, 인증은 이미 로그인체크에서 처리
+    // 여기서는 로그인 정보를 받아오는 역할만 한다.
+    @GetMapping("/")
+    public String homeLoginV3ArgumentResolver(@Login Member loginMember, Model model) {
+
+        if (loginMember == null) {
+            return "home";
+        }
+
         model.addAttribute("member", loginMember);
         return "loginHome";
     }
